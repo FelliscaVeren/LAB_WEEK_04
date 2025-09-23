@@ -7,30 +7,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-private const val ARG_TEXT = "arg_text"
-
+private const val TAB_CONTENT = "TAB_CONTENT"
 class CafeDetailFragment : Fragment() {
-
-    companion object {
-        fun newInstance(text: String): CafeDetailFragment {
-            val fragment = CafeDetailFragment()
-            val args = Bundle()
-            args.putString(ARG_TEXT, text)
-            fragment.arguments = args
-            return fragment
+    private var content: String? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            content = it.getString(TAB_CONTENT)
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+// Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_cafe_detail, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val textView = view.findViewById<TextView>(R.id.cafe_text)
-        textView.text = arguments?.getString(ARG_TEXT)
+        view.findViewById<TextView>(R.id.content_description)
+            ?.text = content
+    }
+    companion object {
+        fun newInstance(content: String) =
+            CafeDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putString(TAB_CONTENT, content)
+                }
+            }
     }
 }
